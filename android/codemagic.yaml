@@ -1,0 +1,2 @@
+environment:
+  flutter: 3.13.9  # ✅ Must be 3.13.0 or higher for modern Gradle compatibility
