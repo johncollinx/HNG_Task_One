@@ -1,7 +1,6 @@
 workflows:
   build-android:
     name: Build Android APK
-    # working_directory: portfolio_app
     environment:
       flutter: stable
     scripts:
