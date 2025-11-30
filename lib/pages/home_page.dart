@@ -1,99 +1,262 @@
 import 'package:flutter/material.dart';
-import 'package:portfolio_app/components/contact_form.dart';
-import 'package:portfolio_app/components/footer.dart';
-import 'package:portfolio_app/components/header1.dart';
-import 'package:portfolio_app/components/home_page_actions.dart';
-import 'package:portfolio_app/components/more_about_me.dart';
-import 'package:portfolio_app/components/my_drawer.dart';
-import 'package:portfolio_app/components/recent_projects.dart';
-import 'package:portfolio_app/components/social_icons_bar.dart';
-import 'package:portfolio_app/components/top_skills.dart';
-import 'package:portfolio_app/utils.dart';
 
-class HomePage extends StatelessWidget {
-  HomePage({Key? key}) : super(key: key);
-  final ScrollController myScrollController = ScrollController();
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  bool isDark = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
+      drawer: Drawer(
+        child: ListView(
+          padding: const EdgeInsets.all(0),
+          children: const [
+            DrawerHeader(
+              decoration: BoxDecoration(color: Colors.teal),
+              child: Text("Menu", style: TextStyle(color: Colors.white, fontSize: 20)),
+            ),
+            ListTile(title: Text("Projects")),
+            ListTile(title: Text("Skills")),
+            ListTile(title: Text("Contact")),
+          ],
+        ),
+      ),
+
       appBar: AppBar(
+        backgroundColor: Colors.teal,
         title: const Text(
-          'JANE DOE',
+          "My Portfolio",
           style: TextStyle(
+            color: Colors.white,
             fontSize: 22,
-            color: Color(0xFF4756DF),
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w500,
           ),
         ),
-        backgroundColor: Colors.white,
-        toolbarHeight: 66,
-        elevation: 2,
         actions: [
-          Utils.isMobile(context)
-              ? Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.menu,
-                      color: Color(0xFf4756DF),
-                      size: 30,
-                    ),
-                    onPressed: () {
-                      _scaffoldKey.currentState!.openEndDrawer();
-                    },
-                  ),
-                )
-              : HomePageActions(
-                  sc: myScrollController,
-                ),
+          Row(
+            children: [
+              const Icon(Icons.wb_sunny, color: Colors.white70),
+              Switch(
+                value: isDark,
+                onChanged: (val) {
+                  setState(() => isDark = val);
+                },
+              ),
+              const Icon(Icons.dark_mode, color: Colors.white70),
+              const SizedBox(width: 10),
+            ],
+          ),
         ],
       ),
-      endDrawer: Utils.isMobile(context)
-          ? MyDrawer(
-              sc: myScrollController,
-            )
-          : null,
-      floatingActionButton: FloatingActionButton(
-        mini: Utils.isMobile(context) ? true : false,
-        onPressed: () {
-          myScrollController.animateTo(
-            0,
-            duration: const Duration(milliseconds: 800),
-            curve: Curves.easeIn,
-          );
-        },
-        child: Image.network(
-          'https://eager-williams-af0d00.netlify.app/assets/icons/icons8-upward-arrow.gif',
-        ),
-      ),
+
       body: SafeArea(
-        child: Stack(
-          children: [
-            SingleChildScrollView(
-              controller: myScrollController,
-              child: Column(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Profile Photo
+              Center(
+                child: CircleAvatar(
+                  radius: 60,
+                  backgroundImage: NetworkImage(
+                    "https://your-photo-url-here.jpg",
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              // About Me
+              _sectionCard(
+                title: "About Me",
+                child: const Text(
+                  "Hi, I’m Collins Ehimhen Amiohu — a tech-driven professional from Abuja, Nigeria... "
+                  "I have a background in web development, sales, marketing, and admin, and I’m currently "
+                  "pursuing a B.Sc. in Computer Science.",
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              // Skills
+              _sectionCard(
+                title: "Soft Skills",
+                child: Wrap(
+                  spacing: 10,
+                  runSpacing: 10,
+                  children: const [
+                    _chip("Teamwork"),
+                    _chip("Leadership"),
+                    _chip("Problem Solving"),
+                    _chip("Time Management"),
+                    _chip("Communication"),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 30),
+
+              // Action Buttons
+              _roundedButton(Icons.download, "Download CV"),
+              const SizedBox(height: 15),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: const [
-                  Header1(),
-                  MoreAboutMe(),
-                  SizedBox(height: 50),
-                  TopSkills(),
-                  SizedBox(height: 50),
-                  RecentProjects(),
-                  SizedBox(height: 50),
-                  ContactForm(),
-                  SizedBox(height: 50),
-                  Footer(),
-                  SizedBox(height: 20),
+                  _roundedButton(Icons.code, "GitHub"),
+                  _roundedButton(Icons.business_center, "LinkedIn"),
                 ],
               ),
-            ),
-            const SocialIconsBar(),
-          ],
+              const SizedBox(height: 15),
+              const _roundedButton(Icons.email, "Email"),
+
+              const SizedBox(height: 40),
+
+              // Projects
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text("Projects",
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+              ),
+              const SizedBox(height: 16),
+
+              _projectCard(
+                title: "Ctranslate Mobile App",
+                desc:
+                    "An offline-centric translation app for low-resource languages.",
+              ),
+              const SizedBox(height: 20),
+
+              _projectCard(
+                title: "ToDo App",
+                desc:
+                    "A productivity app to manage daily tasks with Firebase backend.",
+              ),
+              const SizedBox(height: 30),
+
+              // Contact
+              _sectionCard(
+                title: "Contact Me",
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    ListTile(
+                      leading: Icon(Icons.email),
+                      title: Text("johncollinsbran@gmail.com"),
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.phone),
+                      title: Text("+234-09011906128"),
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.link),
+                      title: Text("www.Climel.inc"),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 40),
+            ],
+          ),
         ),
       ),
     );
   }
+}
+
+// ---------- COMPONENT HELPERS ----------
+
+Widget _sectionCard({required String title, required Widget child}) {
+  return Container(
+    width: double.infinity,
+    padding: const EdgeInsets.all(18),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(20),
+      boxShadow: [
+        BoxShadow(color: Colors.black12, blurRadius: 6, spreadRadius: 2),
+      ],
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(title, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+        const SizedBox(height: 10),
+        child,
+      ],
+    ),
+  );
+}
+
+class _chip extends StatelessWidget {
+  final String text;
+  const _chip(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.deepPurple.shade50,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Text(text, style: const TextStyle(fontSize: 14)),
+    );
+  }
+}
+
+Widget _roundedButton(IconData icon, String label) {
+  return Container(
+    padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
+    decoration: BoxDecoration(
+      color: Colors.deepPurple.shade100,
+      borderRadius: BorderRadius.circular(30),
+    ),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, size: 22, color: Colors.deepPurple),
+        const SizedBox(width: 10),
+        Text(label,
+            style:
+                const TextStyle(fontSize: 16, color: Colors.deepPurple)),
+      ],
+    ),
+  );
+}
+
+Widget _projectCard({required String title, required String desc}) {
+  return Container(
+    padding: const EdgeInsets.all(16),
+    decoration: BoxDecoration(
+      color: Colors.deepPurple.shade50,
+      borderRadius: BorderRadius.circular(16),
+    ),
+    child: Row(
+      children: [
+        const Icon(Icons.work_outline, size: 30),
+        const SizedBox(width: 15),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(title,
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.w600)),
+              const SizedBox(height: 4),
+              Text(desc, style: const TextStyle(fontSize: 14)),
+            ],
+          ),
+        )
+      ],
+    ),
+  );
 }
