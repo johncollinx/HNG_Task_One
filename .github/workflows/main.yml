@@ -3,7 +3,7 @@ name: Deploy Flutter Web
 on:
   push:
     branches:
-      - main   # Deploy on every push to main
+      - main
 
 jobs:
   build-and-deploy:
@@ -13,16 +13,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install Flutter 3.16.5
+      - name: Install Flutter (stable)
         uses: subosito/flutter-action@v2
         with:
           channel: stable
-          flutter-version: '3.16.5'
 
-      - name: Get dependencies
+      - name: Install dependencies
         run: flutter pub get
 
-      - name: Build Flutter Web (release)
+      - name: Build Flutter Web
         run: flutter build web --release
 
       - name: Deploy to GitHub Pages
