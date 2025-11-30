@@ -104,18 +104,18 @@ class _HomePageState extends State<HomePage> {
 
               const SizedBox(height: 30),
 
-              // Action Buttons
+              // Action Buttons (REMOVED all const)
               _roundedButton(Icons.download, "Download CV"),
               const SizedBox(height: 15),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [
+                children: [
                   _roundedButton(Icons.code, "GitHub"),
                   _roundedButton(Icons.business_center, "LinkedIn"),
                 ],
               ),
               const SizedBox(height: 15),
-              const _roundedButton(Icons.email, "Email"),
+              _roundedButton(Icons.email, "Email"), // NO const
 
               const SizedBox(height: 40),
 
@@ -123,7 +123,7 @@ class _HomePageState extends State<HomePage> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text("Projects",
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+                    style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
               ),
               const SizedBox(height: 16),
 
