@@ -65,8 +65,8 @@ class _HomePageState extends State<HomePage> {
               Center(
                 child: CircleAvatar(
                   radius: 60,
-                  backgroundImage: NetworkImage(
-                    "https://your-photo-url-here.jpg",
+                  backgroundImage: Image.assets(
+                    "cover.jpg",
                   ),
                 ),
               ),
