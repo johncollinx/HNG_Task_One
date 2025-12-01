@@ -19,7 +19,10 @@ class _HomePageState extends State<HomePage> {
           children: const [
             DrawerHeader(
               decoration: BoxDecoration(color: Colors.teal),
-              child: Text("Menu", style: TextStyle(color: Colors.white, fontSize: 20)),
+              child: Text(
+                "Menu",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
             ),
             ListTile(title: Text("Projects")),
             ListTile(title: Text("Skills")),
@@ -65,16 +68,14 @@ class _HomePageState extends State<HomePage> {
               Center(
                 child: CircleAvatar(
                   radius: 60,
-                  backgroundImage: Image.asset(
-                    "cover.jpg",
-                  ),
+                  backgroundImage: const AssetImage("assets/images/cover.jpg"),
                 ),
               ),
 
               const SizedBox(height: 20),
 
               // About Me
-              _sectionCard(
+              sectionCard(
                 title: "About Me",
                 child: const Text(
                   "Hi, I’m Collins Ehimhen Amiohu — a tech-driven professional from Abuja, Nigeria... "
@@ -87,62 +88,65 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 20),
 
               // Skills
-              _sectionCard(
+              sectionCard(
                 title: "Soft Skills",
                 child: Wrap(
                   spacing: 10,
                   runSpacing: 10,
                   children: const [
-                    _chip("Teamwork"),
-                    _chip("Leadership"),
-                    _chip("Problem Solving"),
-                    _chip("Time Management"),
-                    _chip("Communication"),
+                    SkillChip("Teamwork"),
+                    SkillChip("Leadership"),
+                    SkillChip("Problem Solving"),
+                    SkillChip("Time Management"),
+                    SkillChip("Communication"),
                   ],
                 ),
               ),
 
               const SizedBox(height: 30),
 
-              // Action Buttons (REMOVED all const)
-              _roundedButton(Icons.download, "Download CV"),
+              roundedButton(Icons.download, "Download CV"),
               const SizedBox(height: 15),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _roundedButton(Icons.code, "GitHub"),
-                  _roundedButton(Icons.business_center, "LinkedIn"),
+                  roundedButton(Icons.code, "GitHub"),
+                  roundedButton(Icons.business_center, "LinkedIn"),
                 ],
               ),
+
               const SizedBox(height: 15),
-              _roundedButton(Icons.email, "Email"), // NO const
+              roundedButton(Icons.email, "Email"),
 
               const SizedBox(height: 40),
 
               // Projects
               Align(
                 alignment: Alignment.centerLeft,
-                child: Text("Projects",
-                    style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+                child: Text(
+                  "Projects",
+                  style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                ),
               ),
+
               const SizedBox(height: 16),
 
-              _projectCard(
+              projectCard(
                 title: "Ctranslate Mobile App",
-                desc:
-                    "An offline-centric translation app for low-resource languages.",
+                desc: "An offline-centric translation app for low-resource languages.",
               ),
               const SizedBox(height: 20),
 
-              _projectCard(
+              projectCard(
                 title: "ToDo App",
-                desc:
-                    "A productivity app to manage daily tasks with Firebase backend.",
+                desc: "A productivity app to manage daily tasks with Firebase backend.",
               ),
+
               const SizedBox(height: 30),
 
               // Contact
-              _sectionCard(
+              sectionCard(
                 title: "Contact Me",
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -172,23 +176,26 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-// ---------- COMPONENT HELPERS ----------
+//
+// ---------- COMPONENTS ----------
+//
 
-Widget _sectionCard({required String title, required Widget child}) {
+Widget sectionCard({required String title, required Widget child}) {
   return Container(
     width: double.infinity,
     padding: const EdgeInsets.all(18),
     decoration: BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.circular(20),
-      boxShadow: [
+      boxShadow: const [
         BoxShadow(color: Colors.black12, blurRadius: 6, spreadRadius: 2),
       ],
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+        Text(title,
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
         const SizedBox(height: 10),
         child,
       ],
@@ -196,9 +203,9 @@ Widget _sectionCard({required String title, required Widget child}) {
   );
 }
 
-class _chip extends StatelessWidget {
+class SkillChip extends StatelessWidget {
   final String text;
-  const _chip(this.text);
+  const SkillChip(this.text, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -213,27 +220,29 @@ class _chip extends StatelessWidget {
   }
 }
 
-Widget _roundedButton(IconData icon, String label) {
-  return Container(
-    padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
-    decoration: BoxDecoration(
-      color: Colors.deepPurple.shade100,
-      borderRadius: BorderRadius.circular(30),
-    ),
-    child: Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(icon, size: 22, color: Colors.deepPurple),
-        const SizedBox(width: 10),
-        Text(label,
-            style:
-                const TextStyle(fontSize: 16, color: Colors.deepPurple)),
-      ],
+Widget roundedButton(IconData icon, String label) {
+  return InkWell(
+    onTap: () {},
+    child: Container(
+      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
+      decoration: BoxDecoration(
+        color: Colors.deepPurple.shade100,
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 22, color: Colors.deepPurple),
+          const SizedBox(width: 10),
+          Text(label,
+              style: const TextStyle(fontSize: 16, color: Colors.deepPurple)),
+        ],
+      ),
     ),
   );
 }
 
-Widget _projectCard({required String title, required String desc}) {
+Widget projectCard({required String title, required String desc}) {
   return Container(
     padding: const EdgeInsets.all(16),
     decoration: BoxDecoration(
