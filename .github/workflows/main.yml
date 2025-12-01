@@ -1,17 +1,35 @@
+# This workflow uses the official GitHub Pages actions for deployment.
 name: Deploy Flutter Web
 
+# Runs on pushes targeting the 'main' branch and allows manual triggering.
 on:
   push:
-    branches:
-      - main
+    branches: ["main"]
+  workflow_dispatch:
+
+# Sets necessary permissions for fetching the code and deploying to Pages.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allows only one deployment run at a time.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
+      # Sets up the Pages environment for subsequent deployment.
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      # Installs the stable version of Flutter.
       - name: Install Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -20,15 +38,29 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      # Builds the optimized static files for the web platform.
       - name: Build Flutter Web
         run: flutter build web --release
 
+      # Crucial step: Creates a .nojekyll file to prevent GitHub Pages from 
+      # running the Jekyll build process on the static output files.
       - name: Disable Jekyll
         run: touch build/web/.nojekyll
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      # Uploads the 'build/web' directory as the deployment artifact.
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: build/web
-          
+          path: 'build/web' # The output directory for flutter build web
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      # Deploys the uploaded artifact to GitHub Pages.
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
