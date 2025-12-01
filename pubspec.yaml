@@ -1,11 +1,11 @@
 name: portfolio_app
 description: A Flutter portfolio web app.
-publish_to: 'none' # Private package
+publish_to: 'none'
 
 version: 1.0.0+1
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"  # Compatible with stable Flutter/Dart
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -20,12 +20,11 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-  # Add your assets here if you have any
   assets:
     - assets/images/cover.jpg
     - assets/icons/
 
-  # Add custom fonts if needed
+  # Uncomment if you add custom fonts later
   # fonts:
   #   - family: Roboto
   #     fonts:
