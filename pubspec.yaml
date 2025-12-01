@@ -22,8 +22,8 @@ flutter:
 
   # Add your assets here if you have any
   assets:
-    # - assets/images/
-    # - assets/icons/
+    - assets/images/
+    - assets/icons/
 
   # Add custom fonts if needed
   # fonts:
