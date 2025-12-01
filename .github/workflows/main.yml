@@ -10,10 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Install Flutter (stable)
+      - name: Install Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: stable
@@ -24,10 +23,12 @@ jobs:
       - name: Build Flutter Web
         run: flutter build web --release
 
+      - name: Disable Jekyll
+        run: touch build/web/.nojekyll
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build/web
-          enable_jekyll: false
+          publish_dir: build/web
           
