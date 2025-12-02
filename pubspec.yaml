@@ -11,6 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
+  # Added Google Fonts for enhanced web typography
+  google_fonts: ^6.1.0 
 
 dev_dependencies:
   flutter_test:
@@ -19,6 +21,10 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  # 💡 Important Note for Web Deployment: 
+  # If deployed to a subpath (e.g., GitHub Pages URL), you must build 
+  # with the base-href argument: flutter build web --base-href /repo-name/
 
   assets:
     - assets/images/
@@ -29,4 +35,3 @@ flutter:
   #   - family: Roboto
   #     fonts:
   #       - asset: assets/fonts/Roboto-Regular.ttf
-  
